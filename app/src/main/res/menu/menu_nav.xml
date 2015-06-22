@@ -6,7 +6,7 @@
         <item
             android:id="@+id/navi_item_1"
             android:icon="@mipmap/ic_dashboard_white_48dp"
-            android:title="Dashboard" />
+            android:title="Home" />
 
         <item
             android:id="@+id/navi_item_2"
@@ -15,8 +15,8 @@
 
         <item
             android:id="@+id/navi_item_3"
-            android:icon="@mipmap/ic_card_travel_white_48dp"
-            android:title="Card Travel" />
+            android:icon="@mipmap/ic_download"
+            android:title="Downloads" />
 
     </group>
 
