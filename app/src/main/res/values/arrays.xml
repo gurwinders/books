@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="samples">
+        <item>CoordinatorLayout with RecyclerView</item>
+        <item>CoordinatorLayout with NestedScrollView</item>
+        <item>TextInputLayout</item>
+        <item>DataBinding</item>
+    </array>
+
+</resources>
