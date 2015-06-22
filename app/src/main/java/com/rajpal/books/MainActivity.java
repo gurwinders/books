@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initToolbar();
 
 
-
     }
 
     private void initToolbar() {
@@ -67,9 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         menuItem.setChecked(true);
-        Intent ii = new Intent(MainActivity.this,NewFragment.class);
-        startActivity(ii);
- //       Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (menuItem.getItemId()) {
+            case R.id.navi_item_1:
+                Intent ii = new Intent(MainActivity.this, NewFragment.class);
+                startActivity(ii);
+                drawerlayout.closeDrawers();
+        }
+
+
+        //       Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         return false;
     }
 
