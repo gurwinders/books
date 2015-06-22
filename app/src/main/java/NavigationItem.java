@@ -1,5 +1,3 @@
-package com.rajpal.books;
-
 import android.graphics.drawable.Drawable;
 
 /**
