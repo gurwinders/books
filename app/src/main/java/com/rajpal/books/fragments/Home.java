@@ -29,7 +29,8 @@ public class Home extends Fragment {
 
         tv.setText("new fragment");
         initToolbar(rootView);
-        download();
+      //  download();
+       //test updates
         return rootView;
     }
 
