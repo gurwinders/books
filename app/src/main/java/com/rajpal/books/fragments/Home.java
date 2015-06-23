@@ -57,10 +57,11 @@ public class Home extends Fragment {
     public void download() {
 
         Intent intent = new Intent(getActivity(), DownloadService.class);
-        intent.putExtra("url", "http://api.androidhive.info/progressdialog/hive.jpg");
+        String url = "http://s320.ve.vc/data/320/33447/273523/Bad_Baby_-_Gippy_Grewal_-_320Kbps_-_www.DjPunjab.Com.mp3";
+//        "http://api.androidhive.info/progressdialog/hive.jpg"
+        intent.putExtra("url", url);
         getActivity().startService(intent);
     }
-
 
 
 }
