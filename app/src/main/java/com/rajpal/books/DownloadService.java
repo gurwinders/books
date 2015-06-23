@@ -84,6 +84,7 @@ public class DownloadService extends IntentService {
             // download the file
             InputStream input = new BufferedInputStream(connection.getInputStream());
 //            OutputStream output = new FileOutputStream("/sdcard/BarcodeScanner-debug.jpg");
+
             OutputStream output = new FileOutputStream(DESTINATION_PATH.getAbsolutePath());
             byte data[] = new byte[1024];
             long total = 0;
