@@ -25,6 +25,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <service android:name=".DownloadService" />
+        <service android:name=".SomeService1"/>
     </application>
 
 </manifest>
