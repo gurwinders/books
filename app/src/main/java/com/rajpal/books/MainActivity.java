@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.rajpal.books.fragments.Downloads;
 import com.rajpal.books.fragments.Home;
+import com.rajpal.books.fragments.InApp;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -87,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navi_item_1:
                 fragment = new Home();
                 UpdateFragment(fragment, true);
+                drawerlayout.closeDrawers();
+                break;
+            case R.id.navi_item_2:
+                fragment = new InApp();
+                UpdateFragment(fragment, false);
                 drawerlayout.closeDrawers();
                 break;
             case R.id.navi_item_3:

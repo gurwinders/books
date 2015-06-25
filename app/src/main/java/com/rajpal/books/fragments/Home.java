@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -25,7 +24,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.rajpal.books.DownloadService;
+import com.rajpal.books.MyApplication;
 import com.rajpal.books.R;
 import com.rajpal.books.ServiceManager;
 import com.rajpal.books.SomeService1;
@@ -60,8 +62,9 @@ public class Home extends Fragment {
     NotificationCompat.Builder mBuilder;
     AsyncTask<Void, Void, Void> downloadTask;
     private RandomAccessFile outFile;
+    Tracker tracker;
 
-    @Nullable
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.test_fragment, container, false);
@@ -70,6 +73,25 @@ public class Home extends Fragment {
         pause = (Button) rootView.findViewById(R.id.btn_pause);
         tv.setText("new fragment");
         initToolbar(rootView);
+// Get tracker.
+        tracker = ((MyApplication) getActivity().getApplication()).getTracker();
+
+// Enable Advertising Features.
+        tracker.enableAdvertisingIdCollection(true);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // All subsequent hits will be send with screen name = "main screen"
+                tracker.setScreenName("Home screen");
+
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("UX")
+                        .setAction("click")
+                        .setLabel("submit")
+                        .build());
+            }
+        });
+
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
