@@ -192,6 +192,7 @@ public class Home extends Fragment {
         InputStream input;
         private int fileLength;
         OutputStream output;
+        private boolean mDownloading;
 
         @Override
         protected void onPreExecute() {
@@ -225,23 +226,23 @@ public class Home extends Fragment {
 
                 File file = new File(DESTINATION_PATH.getAbsolutePath());
                 if (file.exists()) {
+                    mDownloading = true;
                     String lastModified = sp.getString("last", null);
                     downloaded = sp.getLong("bytes", 0);
-                    fileLength = sp.getInt("lenght", 0);
+//                    fileLength = sp.getInt("lenght", 0);
                     long mdownloaded = file.length();
                     connection.setRequestProperty("Range", "bytes=" + (file.length()) + "-");
                     connection.setRequestProperty("If-Range", lastModified);
-                    fileLength = connection.getContentLength();
+                    fileLength = (int) mdownloaded + connection.getContentLength();
                     connection.connect();
                     Log.d("--lastModi---sp", lastModified + " Resume from: " + downloaded + " == " + mdownloaded + " from file");
                 } else {
+                    mDownloading = true;
                     connection.setRequestProperty("Range", "bytes=" + downloaded + "-");
                     connection.connect();
                     fileLength = connection.getContentLength();
                     String lastModified = connection.getHeaderField("Last-Modified");
                     Log.d("--lastModi", lastModified);
-
-
                     SharedPreferences.Editor e = sp.edit();
                     e.putString("last", lastModified);
                     e.putInt("lenght", fileLength);
@@ -258,9 +259,13 @@ public class Home extends Fragment {
 
 
                 // Setup streams and buffers.
-                output = new FileOutputStream(DESTINATION_PATH.getAbsolutePath(),true);
-                input = new BufferedInputStream(url.openStream(), 8192);
-            //    outFile = new RandomAccessFile(DESTINATION_PATH.getAbsolutePath(), "rw");
+                if (mDownloading) {
+                    output = new FileOutputStream(DESTINATION_PATH.getAbsolutePath(), true);
+                } else {
+                    output = new FileOutputStream(DESTINATION_PATH.getAbsolutePath());
+                }
+                input = new BufferedInputStream(connection.getInputStream(), 8192);
+                //    outFile = new RandomAccessFile(DESTINATION_PATH.getAbsolutePath(), "rw");
 //                if (downloaded > 0) {
 ////                    outFile.seek(downloaded);
 //                    long moveto = outFile.length();
@@ -312,10 +317,10 @@ public class Home extends Fragment {
 ////                        break;
 ////                    }
 //                }
-                Log.d("--read--", "bytes: " + count + "  out--"+"  file size:"+file.length());
+                Log.d("--read--", "bytes: " + count + "  out--" + "  file size:" + file.length());
                 // Close streams.
 
-             //   outFile.close();
+                //   outFile.close();
                 input.close();
 
 //                OutputStream output = new FileOutputStream(DESTINATION_PATH.getAbsolutePath(),true);
@@ -344,9 +349,21 @@ public class Home extends Fragment {
                     input.close();
                     output.flush();
                     output.close();
-                 //   outFile.close();
+                    //   outFile.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                }
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null) {
+                    connection.disconnect();
                 }
             }
 //        try {
