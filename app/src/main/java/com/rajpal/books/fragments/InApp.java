@@ -1,6 +1,11 @@
 package com.rajpal.books.fragments;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.rajpal.books.R;
 import com.rajpal.books.util.IabHelper;
 import com.rajpal.books.util.IabResult;
@@ -20,7 +26,8 @@ import com.rajpal.books.util.IabResult;
 public class InApp extends Fragment {
     private IabHelper mHelper;
     private String TAG = "----inapp---";
-
+    IInAppBillingService mService;
+    ServiceConnection mServiceConn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.inapp, container, false);
@@ -43,6 +50,22 @@ public class InApp extends Fragment {
 //        });
 
 
+     mServiceConn = new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mService = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                mService = IInAppBillingService.Stub.asInterface(service);
+            }
+        };
+
+        Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        getActivity().bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
         Log.d(TAG, "Creating IAB helper.");
         mHelper = new IabHelper(getActivity(), base64EncodedPublicKey);
 
@@ -72,7 +95,7 @@ public class InApp extends Fragment {
                 // IAP is fully set up. Now, let's get an inventory of stuff we
                 // own.
                 Log.d(TAG, "Setup successful. Querying inventory.");
-        //        mHelper.queryInventoryAsync(mGotInventoryListener);
+                //        mHelper.queryInventoryAsync(mGotInventoryListener);
             }
         });
 
@@ -98,7 +121,11 @@ public class InApp extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mService != null) {
+          getActivity().  unbindService(mServiceConn);
+        }
         if (mHelper != null) mHelper.dispose();
         mHelper = null;
     }
+
 }
