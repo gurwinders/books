@@ -2,6 +2,9 @@ package com.rajpal.books;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,6 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,9 +27,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rajpal.books.fragments.Downloads;
+import com.facebook.appevents.AppEventsLogger;
+import com.rajpal.books.fragments.Facebook;
 import com.rajpal.books.fragments.Home;
-import com.rajpal.books.fragments.InApp;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +51,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initToolbar();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.frame_container, new Home()).commit();
+
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.rajpal.books",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+//fsrRVdson1jkfORwe278SOXz69w=
+
+//            876132225799928
+        }
 
     }
 
@@ -91,15 +117,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerlayout.closeDrawers();
                 break;
             case R.id.navi_item_2:
-                fragment = new InApp();
+                fragment = new Facebook();
+
                 UpdateFragment(fragment, false);
                 drawerlayout.closeDrawers();
                 break;
-            case R.id.navi_item_3:
-                fragment = new Downloads();
-                UpdateFragment(fragment, false);
-                drawerlayout.closeDrawers();
-                break;
+           // case R.id.navi_item_3:
+//                fragment = new Downloads();
+//                UpdateFragment(fragment, false);
+//                drawerlayout.closeDrawers();
+//                break;
 
         }
 
@@ -167,4 +194,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 }

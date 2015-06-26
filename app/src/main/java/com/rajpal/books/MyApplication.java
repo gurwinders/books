@@ -2,6 +2,7 @@ package com.rajpal.books;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
@@ -12,6 +13,7 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+        FacebookSdk.sdkInitialize(this);
         analytics = GoogleAnalytics.getInstance(this);
         analytics.setLocalDispatchPeriod(1800);
         analytics.getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
