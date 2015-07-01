@@ -25,7 +25,8 @@
         <menu>
             <item
                 android:id="@+id/navi_item_4"
-                android:icon="@mipmap/ic_shopping_cart_white_48dp"
+                android:actionViewClass="com.facebook.share.widget.ShareButton"
+
                 android:title="Shopping Cart" />
 
             <item

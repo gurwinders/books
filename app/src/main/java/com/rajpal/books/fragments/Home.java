@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
@@ -24,10 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.rajpal.books.DownloadService;
-import com.rajpal.books.MyApplication;
+import com.rajpal.books.Mservice;
 import com.rajpal.books.R;
 import com.rajpal.books.ServiceManager;
 import com.rajpal.books.SomeService1;
@@ -62,7 +59,7 @@ public class Home extends Fragment {
     NotificationCompat.Builder mBuilder;
     AsyncTask<Void, Void, Void> downloadTask;
     private RandomAccessFile outFile;
-    Tracker tracker;
+    // Tracker tracker;
 
 
     @Override
@@ -71,24 +68,26 @@ public class Home extends Fragment {
         TextView tv = (TextView) rootView.findViewById(R.id.textView);
         start = (Button) rootView.findViewById(R.id.btn_start);
         pause = (Button) rootView.findViewById(R.id.btn_pause);
-        tv.setText("new fragment");
+//        Typeface tf= Typeface.createFromAsset(getActivity().getAssets(), "Akaash.ttf");
+//        tv.setTypeface(tf);
+        tv.setText("hello");
         initToolbar(rootView);
 // Get tracker.
-        tracker = ((MyApplication) getActivity().getApplication()).getTracker();
+        //   tracker = ((MyApplication) getActivity().getApplication()).getTracker();
 
 // Enable Advertising Features.
-        tracker.enableAdvertisingIdCollection(true);
+        //    tracker.enableAdvertisingIdCollection(true);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // All subsequent hits will be send with screen name = "main screen"
-                tracker.setScreenName("Home screen");
-
-                tracker.send(new HitBuilders.EventBuilder()
-                        .setCategory("UX")
-                        .setAction("click")
-                        .setLabel("submit")
-                        .build());
+//                tracker.setScreenName("Home screen");
+//
+//                tracker.send(new HitBuilders.EventBuilder()
+//                        .setCategory("UX")
+//                        .setAction("click")
+//                        .setLabel("submit")
+//                        .build());
             }
         });
 
@@ -120,26 +119,27 @@ public class Home extends Fragment {
         //test updates
 
 
-        service = new ServiceManager(getActivity(), SomeService1.class, new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case SomeService1.MSG_COUNTER:
-                        // Receive counter value from service 1 and send it to service 2
-//                        textValue1.setText("Counter @ Service1: " + msg.arg1);
-//                        try {
-//                            service2.send(Message.obtain(null, SomeService2.MSG_VALUE, msg.arg1, 0));
-//                        } catch (RemoteException e) {
-//                        }
-                        break;
+//        service = new ServiceManager(getActivity(), SomeService1.class, new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                switch (msg.what) {
+//                    case SomeService1.MSG_COUNTER:
+//                        // Receive counter value from service 1 and send it to service 2
+////                        textValue1.setText("Counter @ Service1: " + msg.arg1);
+////                        try {
+////                            service2.send(Message.obtain(null, SomeService2.MSG_VALUE, msg.arg1, 0));
+////                        } catch (RemoteException e) {
+////                        }
+//                        break;
+//
+//                    default:
+//                        super.handleMessage(msg);
+//                }
+//            }
+//        });
 
-                    default:
-                        super.handleMessage(msg);
-                }
-            }
-        });
-
-
+        Intent ii = new Intent(getActivity(), Mservice.class);
+        getActivity().startService(ii);
         return rootView;
     }
 
