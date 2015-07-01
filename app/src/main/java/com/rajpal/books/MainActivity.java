@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initViews();
         initToolbar();
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.frame_container, new Home()).commit();
+        fm.beginTransaction().replace(R.id.frame_container, new Facebook()).commit();
 
 
         try {

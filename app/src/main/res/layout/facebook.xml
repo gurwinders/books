@@ -11,7 +11,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
+    <com.facebook.share.widget.ShareButton
+        android:id="@+id/likeViewww"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/fb_share_button"
         android:layout_width="wrap_content"

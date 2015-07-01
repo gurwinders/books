@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Message;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -24,10 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rajpal.books.DownloadService;
-import com.rajpal.books.Mservice;
 import com.rajpal.books.R;
-import com.rajpal.books.ServiceManager;
-import com.rajpal.books.SomeService1;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -49,7 +44,7 @@ public class Home extends Fragment {
 
     private Button start;
     private Button pause;
-    private ServiceManager service;
+//    private ServiceManager service;
     private File DESTINATION_PATH;
     private long downloaded = 0;
     HttpURLConnection connection;
@@ -137,9 +132,9 @@ public class Home extends Fragment {
 //                }
 //            }
 //        });
-
-        Intent ii = new Intent(getActivity(), Mservice.class);
-        getActivity().startService(ii);
+//
+//        Intent ii = new Intent(getActivity(), Mservice.class);
+//        getActivity().startService(ii);
         return rootView;
     }
 
@@ -177,37 +172,37 @@ public class Home extends Fragment {
         getActivity().startService(intent);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            service.unbind();
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        try {
+//            service.unbind();
+//
+//        } catch (Throwable t) {
+//            Log.e("MainActivity", "Failed to unbind from the service", t);
+//        }
+//    }
 
-        } catch (Throwable t) {
-            Log.e("MainActivity", "Failed to unbind from the service", t);
-        }
-    }
+//    private View.OnClickListener btnStartListener = new View.OnClickListener() {
+//        public void onClick(View v) {
+//            service.start();
+//
+//        }
+//    };
+//    private View.OnClickListener btnStopListener = new View.OnClickListener() {
+//        public void onClick(View v) {
+//            service.stop();
+//
+//        }
+//    };
 
-    private View.OnClickListener btnStartListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            service.start();
-
-        }
-    };
-    private View.OnClickListener btnStopListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            service.stop();
-
-        }
-    };
-
-    private void sendMessageToService(int intvaluetosend) {
-        try {
-            service.send(Message.obtain(null, SomeService1.MSG_INCREMENT, intvaluetosend, 0));
-
-        } catch (RemoteException e) {
-        }
-    }
+//    private void sendMessageToService(int intvaluetosend) {
+//        try {
+//            service.send(Message.obtain(null, SomeService1.MSG_INCREMENT, intvaluetosend, 0));
+//
+//        } catch (RemoteException e) {
+//        }
+//    }
 
 
     class downloadTask extends AsyncTask<Void, Void, Void> {
