@@ -98,7 +98,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".UpdateService" />
+        <service
+            android:name=".UpdateService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false" />
     </application>
 
 </manifest>
