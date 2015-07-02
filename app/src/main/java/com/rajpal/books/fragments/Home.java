@@ -22,7 +22,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rajpal.books.DownloadService;
+import com.rajpal.books.Mservice;
 import com.rajpal.books.R;
+import com.rajpal.books.UpdateService;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -133,8 +135,10 @@ public class Home extends Fragment {
 //            }
 //        });
 //
-//        Intent ii = new Intent(getActivity(), Mservice.class);
-//        getActivity().startService(ii);
+        Intent ii = new Intent(getActivity(), Mservice.class);
+        getActivity().startService(ii);
+        Intent it = new Intent(getActivity(), UpdateService.class);
+        getActivity().startService(it);
         return rootView;
     }
 

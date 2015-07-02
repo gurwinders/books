@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- Optional permission for reliable local dispatching on non-Google Play devices -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
@@ -80,12 +80,25 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider876132225799928"
             android:exported="true" />
+
         <receiver android:name=".Mreceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".Preceive">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF"></action>
+                <action android:name="android.intent.action.SCREEN_ON"></action>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"></action>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"></action>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"></action>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".UpdateService" />
     </application>
 
 </manifest>
